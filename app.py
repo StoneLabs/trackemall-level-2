@@ -17,16 +17,16 @@ except:
 
 counter = 0
 
-@app.route("/getDetection")
+@app.route("/getDetection", methods=['GET'])
 def getDetection():
-    return mc.get_object("fframes", str(request.data("id")))
+    return mc.get_object("fframes", str(request.args.get("id")))
 
-@app.route("/getNext")
-def getNext(id):
+@app.route("/getNext", methods=['GET'])
+def getNext():
     return mc.get_object("frames", str(counter))
 
 
-@app.route("/setDetection")
+@app.route("/setDetection", methods=['POST'])
 def setDetection():
     identifier = request.data("id")
     frame = request.data("blob")
@@ -38,9 +38,10 @@ def setDetection():
     return 
 
 
-@app.route("/addFrame")
+@app.route("/addFrame", methods=['POST'])
 def addFrame():
-    frame = request.data("blob")
+    print(request.form)
+    frame = request.form["blob"]
     f = open("tmp/o"+str(counter), "w")
     f.write(str(frame))
     f.close()
