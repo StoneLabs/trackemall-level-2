@@ -38,7 +38,7 @@ def setDetection():
     return 
 
 
-@app.route("addFrame")
+@app.route("/addFrame")
 def addFrame():
     frame = request.data("blob")
     f = open("tmp/o"+str(counter), "w")
@@ -48,3 +48,6 @@ def addFrame():
     os.remove("tmp/o"+str(counter))
     counter += 1
     return "success"
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=2438, debug=True)
