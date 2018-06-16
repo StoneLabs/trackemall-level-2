@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+    command: minio server /mnt
+    environment:
+      MINIO_ACCESS_KEY: belastend
+      MINIO_SECRET_KEY: belastend42
+  
+  backend:
+    image: geilesbackend
+    build: .
+    volumes:
+      - .:/app
+    depends_on:
+      - minio
+    command: "/app/start.sh"
+    ports:
+      - "2438:2438"
