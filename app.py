@@ -21,10 +21,13 @@ except:
 @app.route("/getDetection", methods=['GET'])
 def getDetection():
     objects = mc.list_objects_v2('fframes')
-    if(objects):
+    if (objects):
         x = b''
-        for d in mc.get_object("fframes", str(request.args.get("id"))).stream(32*1024):
+        z = str(request.args.get("id"))
+        y = mc.get_object('fframes', z).stream(32*1024)
+        for d in y:
             x += d
+        mc.remove_object('fframes', z)
         return x
     return "ne"
 
@@ -34,8 +37,11 @@ def getNext():
     objects = mc.list_objects_v2('frames')
     if (objects):
         x = b''
-        for d in mc.get_object('frames',str(min(objects,key= lambda x: x.object_name.encode('utf-8')).object_name)).stream(32*1024):
+        z = str(min(objects,key= lambda x: x.object_name.encode('utf-8')).object_name)
+        y = mc.get_object('frames', z).stream(32*1024)
+        for d in y:
             x += d
+        mc.remove_object('frames', z)
         return x
     return "ne"
 
