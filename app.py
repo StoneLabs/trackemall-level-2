@@ -21,7 +21,7 @@ except:
 @app.route("/getDetection", methods=['GET'])
 def getDetection():
     objects = mc.list_objects_v2('fframes')
-    if (len(objects) < 1):
+    try:
         x = b''
         z = str(request.args.get("id"))
         y = mc.get_object('fframes', z).stream(32*1024)
@@ -29,12 +29,14 @@ def getDetection():
             x += d
         mc.remove_object('fframes', z)
         return x
+    except:
+        return -1
     return -1
 
 @app.route("/getFrame", methods=['GET'])
 def getFrame():
     objects = mc.list_objects_v2('frames')
-    if (len(objects) < 1):
+    try:
         x = b''
         z = str(request.args.get("id"))
         y = mc.get_object('frames', z).stream(32*1024)
@@ -42,12 +44,14 @@ def getFrame():
             x += d
         mc.remove_object('frames', z)
         return x
+    except:
+        return -1
     return -1
 
 @app.route("/getNext", methods=['GET'])
 def getNext():
     objects = mc.list_objects_v2('frames')
-    if (len(objects) < 1):
+    try:
         #x = b''
         z = str(min(objects,key= lambda x: int(x.object_name.encode('utf-8'))).object_name)
         #y = mc.get_object('frames', z).stream(32*1024)
@@ -55,6 +59,8 @@ def getNext():
         #    x += d
         #mc.remove_object('frames', z)
         return z
+    except:
+        return -1
     return -1
 
 @app.route("/setDetection", methods=['POST'])
