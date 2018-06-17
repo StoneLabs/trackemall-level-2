@@ -21,7 +21,7 @@ except:
 @app.route("/getDetection", methods=['GET'])
 def getDetection():
     objects = mc.list_objects_v2('fframes')
-    if (objects not is None):
+    if not (objects is None):
         x = b''
         z = str(request.args.get("id"))
         y = mc.get_object('fframes', z).stream(32*1024)
@@ -34,7 +34,7 @@ def getDetection():
 @app.route("/getFrame", methods=['GET'])
 def getFrame():
     objects = mc.list_objects_v2('frames')
-    if (objects not is None):
+    if not (objects is None):
         x = b''
         z = str(request.args.get("id"))
         y = mc.get_object('frames', z).stream(32*1024)
@@ -47,7 +47,7 @@ def getFrame():
 @app.route("/getNext", methods=['GET'])
 def getNext():
     objects = mc.list_objects_v2('frames')
-    if (objects not is None):
+    if not (objects is None):
         #x = b''
         z = str(min(objects,key= lambda x: int(x.object_name.encode('utf-8'))).object_name)
         #y = mc.get_object('frames', z).stream(32*1024)
