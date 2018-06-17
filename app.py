@@ -31,18 +31,30 @@ def getDetection():
         return x
     return "ne"
 
-
-@app.route("/getNext", methods=['GET'])
-def getNext():
+@app.route("/getFrame", methods=['GET'])
+def getFrame():
     objects = mc.list_objects_v2('frames')
     if (objects):
         x = b''
-        z = str(min(objects,key= lambda x: x.object_name.encode('utf-8')).object_name)
+        z = str(request.args.get("id"))
         y = mc.get_object('frames', z).stream(32*1024)
         for d in y:
             x += d
         mc.remove_object('frames', z)
         return x
+    return "ne"
+
+@app.route("/getNext", methods=['GET'])
+def getNext():
+    objects = mc.list_objects_v2('frames')
+    if (objects):
+        #x = b''
+        z = str(min(objects,key= lambda x: x.object_name.encode('utf-8')).object_name)
+        #y = mc.get_object('frames', z).stream(32*1024)
+        #for d in y:
+        #    x += d
+        #mc.remove_object('frames', z)
+        return z
     return "ne"
 
 @app.route("/setDetection", methods=['POST'])
