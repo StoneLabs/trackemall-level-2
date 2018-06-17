@@ -29,7 +29,7 @@ def getDetection():
             x += d
         mc.remove_object('fframes', z)
         return x
-    return "ne"
+    return -1
 
 @app.route("/getFrame", methods=['GET'])
 def getFrame():
@@ -42,7 +42,7 @@ def getFrame():
             x += d
         mc.remove_object('frames', z)
         return x
-    return "ne"
+    return -1
 
 @app.route("/getNext", methods=['GET'])
 def getNext():
@@ -55,7 +55,7 @@ def getNext():
         #    x += d
         #mc.remove_object('frames', z)
         return z
-    return "ne"
+    return -1
 
 @app.route("/setDetection", methods=['POST'])
 def setDetection():
@@ -64,7 +64,7 @@ def setDetection():
     f.save('/tmp/n'+str(counter))
     mc.fput_object("fframes", str(counter), "/tmp/n"+str(counter), "text/plain")
     os.remove("/tmp/n"+str(counter))
-    return str("fuuuck")
+    return "bombidibom"
 
 @app.route("/addFrame", methods=['POST'])
 def addFrame():
@@ -73,7 +73,7 @@ def addFrame():
     f.save('/tmp/o'+str(counter))
     mc.fput_object("frames", str(counter), "/tmp/o"+str(counter), "text/plain")
     os.remove("/tmp/o"+str(counter))
-    return str("fuuuck")
+    return "works"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=2438, debug=True)
