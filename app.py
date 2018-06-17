@@ -29,7 +29,7 @@ def getDetection():
             x += d
         mc.remove_object('fframes', z)
         return x
-    return -1
+    return str(-1)
 
 @app.route("/getFrame", methods=['GET'])
 def getFrame():
@@ -42,18 +42,13 @@ def getFrame():
             x += d
         mc.remove_object('frames', z)
         return x
-    return -1
+    return str(-1)
 
 @app.route("/getNext", methods=['GET'])
 def getNext():
-    objects = mc.list_objects_v2('frames')
-    if(len(list(objects))):
-        #x = b''
+    objects = list(mc.list_objects_v2('frames'))
+    if(len(objects)):
         z = str(min(objects,key= lambda x: int(x.object_name.encode('utf-8'))).object_name)
-        #y = mc.get_object('frames', z).stream(32*1024)
-        #for d in y:
-        #    x += d
-        #mc.remove_object('frames', z)
         return z
     return str(-1)
 
