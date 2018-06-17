@@ -20,7 +20,7 @@ except:
 
 @app.route("/getDetection", methods=['GET'])
 def getDetection():
-    objects = mc.list_objects_v2('fframes')
+    objects = list(mc.list_objects_v2('fframes'))
     if (objects):
         x = b''
         z = str(request.args.get("id"))
@@ -33,7 +33,7 @@ def getDetection():
 
 @app.route("/getFrame", methods=['GET'])
 def getFrame():
-    objects = mc.list_objects_v2('frames')
+    objects = list(mc.list_objects_v2('frames'))
     if (objects):
         x = b''
         z = str(request.args.get("id"))
@@ -46,7 +46,7 @@ def getFrame():
 
 @app.route("/getNext", methods=['GET'])
 def getNext():
-    objects = mc.list_objects_v2('frames')
+    objects = list(mc.list_objects_v2('frames'))
     if (objects):
         #x = b''
         z = str(min(objects,key= lambda x: int(x.object_name.encode('utf-8'))).object_name)
