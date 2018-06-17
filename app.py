@@ -27,7 +27,7 @@ def getDetection():
         y = mc.get_object('fframes', z).stream(32*1024)
         for d in y:
             x += d
-        mc.remove_object('fframes', z)
+        #mc.remove_object('fframes', z)
         return x
     return str(-1)
 
