@@ -15,16 +15,17 @@ try:
 except:
     print("fuck")
 
-counter = 0
-
 @app.route("/getDetection", methods=['GET'])
 def getDetection():
     return mc.get_object("fframes", str(request.args.get("id")))
 
 @app.route("/getNext", methods=['GET'])
 def getNext():
-    return mc.get_object("frames", str(counter))
-
+    objects = mc.list_objects_v2('frames')
+    x = []
+    for obj in objects:
+        x.append(int(obj.object_name.encode('utf-8')))
+    return objects[objects.index(sorted(x)[0])]
 
 @app.route("/setDetection", methods=['POST'])
 def setDetection():
@@ -40,15 +41,12 @@ def setDetection():
 
 @app.route("/addFrame", methods=['POST'])
 def addFrame():
-    print(request.form)
-    frame = request.form["blob"]
-    f = open("tmp/o"+str(counter), "w")
-    f.write(str(frame))
-    f.close()
-    mc.fput_object("frames", str(counter), "tmp/o"+str(counter), "text/plain")
-    os.remove("tmp/o"+str(counter))
-    counter += 1
-    return "success"
+    f = request.files['file']
+    counter = request.args.get("id")
+    f.save('/tmp/o'+str(counter))
+    mc.fput_object("frames", str(counter), "/tmp/o"+str(counter), "text/plain")
+    os.remove("/tmp/o"+str(counter))
+    return str("fuuuck")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=2438, debug=True)
