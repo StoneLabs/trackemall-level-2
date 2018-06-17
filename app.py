@@ -50,8 +50,8 @@ def getFrame():
 
 @app.route("/getNext", methods=['GET'])
 def getNext():
-    try:
-        objects = mc.list_objects_v2('frames')
+    objects = mc.list_objects_v2('frames')
+    if(len(list(objects))):
         #x = b''
         z = str(min(objects,key= lambda x: int(x.object_name.encode('utf-8'))).object_name)
         #y = mc.get_object('frames', z).stream(32*1024)
@@ -59,9 +59,7 @@ def getNext():
         #    x += d
         #mc.remove_object('frames', z)
         return z
-    except:
-        return -1
-    return -1
+    return str(-1)
 
 @app.route("/setDetection", methods=['POST'])
 def setDetection():
