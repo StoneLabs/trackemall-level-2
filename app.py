@@ -1,3 +1,6 @@
+#When I wrote this, only God and I understood what I was doing
+#Now, God only knows
+
 import os
 from flask import Flask, request
 from flask_cors import CORS
@@ -17,27 +20,33 @@ except:
 
 @app.route("/getDetection", methods=['GET'])
 def getDetection():
-    return mc.get_object("fframes", str(request.args.get("id")))
+    objects = mc.list_objects_v2('fframes')
+    if(objects):
+        x = b''
+        for d in mc.get_object("fframes", str(request.args.get("id"))).stream(32*1024):
+            x += d
+        return x
+    return "ne"
+
 
 @app.route("/getNext", methods=['GET'])
 def getNext():
     objects = mc.list_objects_v2('frames')
-    x = []
-    for obj in objects:
-        x.append(int(obj.object_name.encode('utf-8')))
-    return objects[objects.index(sorted(x)[0])]
+    if (objects):
+        x = b''
+        for d in mc.get_object('frames',str(min(objects,key= lambda x: x.object_name.encode('utf-8')).object_name)).stream(32*1024):
+            x += d
+        return x
+    return "ne"
 
 @app.route("/setDetection", methods=['POST'])
 def setDetection():
-    identifier = request.data("id")
-    frame = request.data("blob")
-    f = open("tmp/n"+str(identifier), "w")
-    f.write(str(frame))
-    f.close()
-    mc.fput_object("fframes", str(identifier), "tmp/n"+str(identifier), "text/plain")
-    os.remove("tmp/n"+str(identifier))
-    return 
-
+    f = request.files['file']
+    counter = request.args.get("id")
+    f.save('/tmp/n'+str(counter))
+    mc.fput_object("fframes", str(counter), "/tmp/n"+str(counter), "text/plain")
+    os.remove("/tmp/n"+str(counter))
+    return str("fuuuck")
 
 @app.route("/addFrame", methods=['POST'])
 def addFrame():
